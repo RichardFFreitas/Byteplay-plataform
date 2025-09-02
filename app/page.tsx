@@ -1,11 +1,14 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Check, Download, Gamepad2, Shield, Star, Zap } from "lucide-react"
-import Link from "next/link"
-import { useState } from "react"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Check, Download, Gamepad2, Shield, Star, Zap } from "lucide-react";
+import Link from "next/link";
 
 export default function LandingPage() {
   const plans = [
@@ -54,33 +57,7 @@ export default function LandingPage() {
       popular: false,
       color: "from-orange-500 to-red-600",
     },
-  ]
-
-  const [loading, setLoading] = useState(false);
-
-  const handlePagamento = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/infinitepay/create-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: 1000, // em centavos
-          orderNsu: "pedido-12345",
-        }),
-      });
-
-      const data = await res.json();
-      if (data.checkoutUrl) {
-        // redireciona pro checkout
-        window.location.href = data.checkoutUrl;
-      }
-    } catch (err) {
-      console.error("Erro ao gerar link:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  ];
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -96,13 +73,22 @@ export default function LandingPage() {
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              href="#features"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Recursos
             </Link>
-            <Link href="#pricing" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              href="#pricing"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Planos
             </Link>
-            <Link href="/login" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              href="/login"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Entrar
             </Link>
             <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700" onClick={handlePagamento} disabled={loading}>
@@ -122,7 +108,9 @@ export default function LandingPage() {
         <div className="container mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 mb-8 border border-gray-700">
             <Star className="w-4 h-4 text-yellow-400" />
-            <span className="text-sm text-gray-300">Pré-venda com 50% de desconto</span>
+            <span className="text-sm text-gray-300">
+              Pré-venda com 50% de desconto
+            </span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -130,18 +118,21 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            A plataforma definitiva para jogos retrô. Acesse milhares de ROMs, emuladores configurados e uma experiência
-            de jogo perfeita em qualquer dispositivo.
+            A plataforma definitiva para jogos retrô. Acesse milhares de ROMs,
+            emuladores configurados e uma experiência de jogo perfeita em
+            qualquer dispositivo.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-lg px-8 py-3"
-            >
-              <Download className="w-5 h-5 mr-2" />
-              Baixar BytePlay
-            </Button>
+            <a href="#pricing">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-lg px-8 py-3"
+              >
+                <Download className="w-5 h-5 mr-2" />
+                Baixar BytePlay
+              </Button>
+            </a>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -169,7 +160,8 @@ export default function LandingPage() {
               Por que escolher o BytePlay?
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Desenvolvido por gamers, para gamers. Uma experiência única e sem complicações.
+              Desenvolvido por gamers, para gamers. Uma experiência única e sem
+              complicações.
             </p>
           </div>
 
@@ -179,7 +171,9 @@ export default function LandingPage() {
                 <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-4">
                   <Gamepad2 className="w-6 h-6 text-white" />
                 </div>
-                <CardTitle className="text-white">Launcher Inteligente</CardTitle>
+                <CardTitle className="text-white">
+                  Launcher Inteligente
+                </CardTitle>
                 <CardDescription className="text-gray-400">
                   Interface moderna com configurações automáticas para cada jogo
                 </CardDescription>
@@ -203,7 +197,9 @@ export default function LandingPage() {
                 <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg flex items-center justify-center mb-4">
                   <Zap className="w-6 h-6 text-white" />
                 </div>
-                <CardTitle className="text-white">Atualizações Automáticas</CardTitle>
+                <CardTitle className="text-white">
+                  Atualizações Automáticas
+                </CardTitle>
                 <CardDescription className="text-gray-400">
                   Sempre tenha a versão mais recente dos emuladores
                 </CardDescription>
@@ -225,11 +221,16 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div id="valores" className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div
+            id="valores"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+          >
             {plans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""}`}
+                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${
+                  plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""
+                }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -245,25 +246,36 @@ export default function LandingPage() {
                   >
                     <Gamepad2 className="w-8 h-8 text-white" />
                   </div>
-                  <CardTitle className="text-2xl text-white">{plan.name}</CardTitle>
+                  <CardTitle className="text-2xl text-white">
+                    {plan.name}
+                  </CardTitle>
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-4xl font-bold text-white">{plan.price}</span>
+                    <span className="text-4xl font-bold text-white">
+                      {plan.price}
+                    </span>
                     <span className="text-gray-400">{plan.period}</span>
                   </div>
-                  <CardDescription className="text-gray-400 mt-2">{plan.description}</CardDescription>
+                  <CardDescription className="text-gray-400 mt-2">
+                    {plan.description}
+                  </CardDescription>
                 </CardHeader>
 
                 <CardContent>
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-3">
+                      <li
+                        key={featureIndex}
+                        className="flex items-center gap-3"
+                      >
                         <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
                         <span className="text-gray-300">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <Button className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity`}>
+                  <Button
+                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity`}
+                  >
                     Começar Agora
                   </Button>
                 </CardContent>
@@ -287,13 +299,22 @@ export default function LandingPage() {
             </div>
 
             <div className="flex items-center gap-6 text-gray-400">
-              <Link href="/privacy" className="hover:text-white transition-colors">
+              <Link
+                href="/privacy"
+                className="hover:text-white transition-colors"
+              >
                 Privacidade
               </Link>
-              <Link href="/terms" className="hover:text-white transition-colors">
+              <Link
+                href="/terms"
+                className="hover:text-white transition-colors"
+              >
                 Termos
               </Link>
-              <Link href="/support" className="hover:text-white transition-colors">
+              <Link
+                href="/support"
+                className="hover:text-white transition-colors"
+              >
                 Suporte
               </Link>
             </div>
@@ -305,5 +326,5 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
