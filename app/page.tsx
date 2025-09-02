@@ -1,8 +1,11 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Check, Download, Gamepad2, Shield, Star, Zap } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
 
 export default function LandingPage() {
   const plans = [
@@ -53,6 +56,32 @@ export default function LandingPage() {
     },
   ]
 
+  const [loading, setLoading] = useState(false);
+
+  const handlePagamento = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/infinitepay/create-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 1000, // em centavos
+          orderNsu: "pedido-12345",
+        }),
+      });
+
+      const data = await res.json();
+      if (data.checkoutUrl) {
+        // redireciona pro checkout
+        window.location.href = data.checkoutUrl;
+      }
+    } catch (err) {
+      console.error("Erro ao gerar link:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
@@ -76,7 +105,7 @@ export default function LandingPage() {
             <Link href="/login" className="text-gray-300 hover:text-white transition-colors">
               Entrar
             </Link>
-            <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700">
+            <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700" onClick={handlePagamento} disabled={loading}>
               Começar Agora
             </Button>
           </nav>
