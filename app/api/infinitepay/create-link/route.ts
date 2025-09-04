@@ -12,9 +12,9 @@ export async function POST(req: Request) {
 
     const body = {
       handle: "richard-felipe-freitas",
-      redirect_url: "http://localhost:3000/dashboard",
+      redirect_url: "https://byteplay-plataform.vercel.app/dashboard",
       order_nsu: randomUUID(),
-      webhook_url: "http://localhost:3000/api/infinitepay/webhook",
+      webhook_url: "https://byteplay-plataform.vercel.app/api/infinitepay/webhook",
       customer: {
         name: name,
         email: email,
