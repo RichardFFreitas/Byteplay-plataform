@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Check, Download, Gamepad2, Shield, Star, Zap } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function LandingPage() {
   const plans = [
@@ -58,6 +61,36 @@ export default function LandingPage() {
       color: "from-orange-500 to-red-600",
     },
   ];
+
+  const [loading, setLoading] = useState(false);
+
+  const handlePagamento = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/infinitepay/create-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "João Silva",
+          email: "joao@email.com",
+          phone_number: "+5511000000001",
+          quantity: 1,
+          price: 100,
+          description: "test"
+        }),
+      });
+
+      const data = await res.json();
+      if (data.checkoutUrl) {
+        // redireciona pro checkout
+        window.location.href = data.checkoutUrl;
+      }
+    } catch (err) {
+      console.error("Erro ao gerar link:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -228,9 +261,8 @@ export default function LandingPage() {
             {plans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${
-                  plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""
-                }`}
+                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""
+                  }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -274,7 +306,7 @@ export default function LandingPage() {
                   </ul>
 
                   <Button
-                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity`}
+                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity`} onClick={handlePagamento} disabled={loading}
                   >
                     Começar Agora
                   </Button>
