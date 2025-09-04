@@ -329,31 +329,9 @@ export default function LandingPage() {
                 BytePlay
               </span>
             </div>
-
-            <div className="flex items-center gap-6 text-gray-400">
-              <Link
-                href="/privacy"
-                className="hover:text-white transition-colors"
-              >
-                Privacidade
-              </Link>
-              <Link
-                href="/terms"
-                className="hover:text-white transition-colors"
-              >
-                Termos
-              </Link>
-              <Link
-                href="/support"
-                className="hover:text-white transition-colors"
-              >
-                Suporte
-              </Link>
-            </div>
           </div>
-
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2024 BytePlay. Todos os direitos reservados.</p>
+            <p>© 2025 BytePlay. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
