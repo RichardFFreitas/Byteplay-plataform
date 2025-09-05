@@ -82,7 +82,6 @@ export default function LandingPage() {
 
       const data = await res.json();
       if (data.checkoutUrl) {
-        // redireciona pro checkout
         window.location.href = data.checkoutUrl;
       }
     } catch (err) {
