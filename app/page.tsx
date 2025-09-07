@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Download, Gamepad2, Shield, Star, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { CheckoutModal } from "@/components/checkout-modal";
 
 export default function LandingPage() {
   const plans = [
@@ -76,7 +77,7 @@ export default function LandingPage() {
           phone_number: "+5511000000001",
           quantity: 1,
           price: 100,
-          description: "test"
+          description: "test",
         }),
       });
 
@@ -89,6 +90,15 @@ export default function LandingPage() {
     } finally {
       setLoading(false);
     }
+  };
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<(typeof plans)[0] | null>(
+    null
+  );
+
+  const handleStartPlan = (plan: (typeof plans)[0]) => {
+    setSelectedPlan(plan);
+    setIsCheckoutOpen(true);
   };
 
   return (
@@ -123,7 +133,11 @@ export default function LandingPage() {
             >
               Entrar
             </Link>
-            <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700" onClick={handlePagamento} disabled={loading}>
+            <Button
+              className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700"
+              onClick={handlePagamento}
+              disabled={loading}
+            >
               Começar Agora
             </Button>
           </nav>
@@ -253,15 +267,13 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div
-            id="valores"
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {plans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""
-                  }`}
+                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${
+                  plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""
+                }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -305,7 +317,8 @@ export default function LandingPage() {
                   </ul>
 
                   <Button
-                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity`} onClick={handlePagamento} disabled={loading}
+                    className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity`}
+                    onClick={() => handleStartPlan(plan)}
                   >
                     Começar Agora
                   </Button>
@@ -334,6 +347,13 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        selectedPlan={selectedPlan}
+      />
     </div>
   );
 }
