@@ -1,4 +1,4 @@
-"use serer"
+"use server"
 
 import AbacatePay from "abacatepay-nodejs-sdk";
 import { NextResponse } from "next/server";
