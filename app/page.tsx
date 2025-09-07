@@ -13,12 +13,31 @@ import { Check, Download, Gamepad2, Shield, Star, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { CheckoutModal } from "@/components/checkout-modal";
+import { ProductType } from "./api/abacatepay/route";
 
 export default function LandingPage() {
-  const plans = [
+  type PlanUI = {
+    product: ProductType;
+    name: string;
+    priceUI: string;
+    period: string;
+    description: string;
+    features: string[];
+    popular: boolean;
+    color: string;
+  };
+
+  const plans: PlanUI[] = [
     {
+      product: {
+        externalId: "pixel-plan",
+        name: "Pixel",
+        description: "Perfeito para começar sua jornada retrô",
+        quantity: 1,
+        price: 499,
+      },
       name: "Pixel",
-      price: "R$ 4,99",
+      priceUI: "R$ 4,99",
       period: "/mês",
       description: "Perfeito para começar sua jornada retrô",
       features: [
@@ -32,8 +51,15 @@ export default function LandingPage() {
       color: "from-pink-500 to-purple-600",
     },
     {
+      product: {
+        externalId: "turbo-plan",
+        name: "Turbo",
+        description: "A escolha mais popular dos gamers",
+        quantity: 1,
+        price: 999,
+      },
       name: "Turbo",
-      price: "R$ 9,99",
+      priceUI: "R$ 9,99",
       period: "/mês",
       description: "A escolha mais popular dos gamers",
       features: [
@@ -47,8 +73,15 @@ export default function LandingPage() {
       color: "from-cyan-500 to-blue-600",
     },
     {
+      product: {
+        externalId: "ultra-plan",
+        name: "Ultra",
+        description: "Experiência completa sem limites",
+        quantity: 1,
+        price: 1499,
+      },
       name: "Ultra",
-      price: "R$ 14,99",
+      priceUI: "R$ 14,99",
       period: "/mês",
       description: "Experiência completa sem limites",
       features: [
@@ -294,7 +327,7 @@ export default function LandingPage() {
                   </CardTitle>
                   <div className="flex items-baseline justify-center gap-1">
                     <span className="text-4xl font-bold text-white">
-                      {plan.price}
+                      {plan.priceUI}
                     </span>
                     <span className="text-gray-400">{plan.period}</span>
                   </div>

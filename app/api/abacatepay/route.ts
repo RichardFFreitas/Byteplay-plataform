@@ -1,9 +1,9 @@
-"use server"
+"use server";
 
 const BASE_URL = process.env.BASE_URL;
 const ABACATEPAY_API_KEY = process.env.ABACATEPAY_API_KEY;
 
-const ABACATE_PAY_URL = "https://api.abacatepay.com/v1/";
+const ABACATE_PAY_URL = process.env.ABACATE_PAY_URL;
 
 interface Product {
   externalId: string;
@@ -13,7 +13,7 @@ interface Product {
   price: number;
 }
 
-interface ClientInfo {
+export interface ClientInfo {
   name: string;
   email: string;
   phone: string;
@@ -41,12 +41,12 @@ interface BillingResponse {
         cellphone: string;
         taxId: string;
         email: string;
-      }
-    }
-  }
+      };
+    };
+  };
 }
 
-interface PixelPlan {
+export interface PixelPlan {
   externalId: "pixel-plan";
   name: "Pixel";
   description: "Perfeito para começar sua jornada retrô";
@@ -54,7 +54,7 @@ interface PixelPlan {
   price: 499;
 }
 
-interface TurboPlan {
+export interface TurboPlan {
   externalId: "turbo-plan";
   name: "Turbo";
   description: "A escolha mais popular dos gamers";
@@ -62,7 +62,7 @@ interface TurboPlan {
   price: 999;
 }
 
-interface UltraPlan {
+export interface UltraPlan {
   externalId: "ultra-plan";
   name: "Ultra";
   description: "Experiência completa sem limites";
@@ -79,12 +79,15 @@ function getProductByType(pType: ProductType): Product {
     description: pType.description,
     quantity: pType.quantity,
     price: pType.price,
-  }
+  };
 
   return product;
 }
 
-export async function createPixPayment(productType: ProductType, clientInfo: ClientInfo) {
+export async function createPixPayment(
+  productType: ProductType,
+  clientInfo: ClientInfo
+) {
   try {
     const product = getProductByType(productType);
 
@@ -93,14 +96,14 @@ export async function createPixPayment(productType: ProductType, clientInfo: Cli
     }
 
     const formattedPhone = clientInfo.phone
-      .replace(/\D/g, '')
-      .replace(/^(\d{2})(\d+)/, '+55$1$2');
+      .replace(/\D/g, "")
+      .replace(/^(\d{2})(\d+)/, "+55$1$2");
 
-    const formattedTaxId = clientInfo.taxId.replace(/\D/g, '');
+    const formattedTaxId = clientInfo.taxId.replace(/\D/g, "");
 
     const body = JSON.stringify({
-      frequency: 'ONE_TIME',
-      methods: ['PIX'],
+      frequency: "ONE_TIME",
+      methods: ["PIX"],
       products: [product],
       returnUrl: `${BASE_URL}/#pricing`,
       completionUrl: `${BASE_URL}/dashboard`,
@@ -109,17 +112,16 @@ export async function createPixPayment(productType: ProductType, clientInfo: Cli
         email: clientInfo.email,
         cellphone: formattedPhone,
         taxId: formattedTaxId,
-      }
-    });
-
-    const response = await fetch(`${ABACATE_PAY_URL}billing/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ABACATEPAY_API_KEY}`,
-        'Accept': 'application/json',
       },
-      body
+    });
+    const response = await fetch(`${ABACATE_PAY_URL}/billing/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${ABACATEPAY_API_KEY}`,
+        Accept: "application/json",
+      },
+      body,
     });
 
     if (!response.ok) {
@@ -127,8 +129,8 @@ export async function createPixPayment(productType: ProductType, clientInfo: Cli
       throw new Error(`Erro ao criar cobrança: ${errorResponse}`);
     }
 
-    const data: BillingResponse = await response.json();
-    return data;
+    const billingRes: BillingResponse = await response.json();
+    return billingRes;
   } catch (error) {
     console.error("Erro ao criar pagamento via Pix:", error);
     throw error;
