@@ -13,7 +13,7 @@ import { Check, Download, Gamepad2, Shield, Star, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { CheckoutModal } from "@/components/checkout-modal";
-import { ProductType } from "./api/abacatepay/route";
+import { ProductType } from "../lib/payment/abacatepay";
 
 export default function LandingPage() {
   type PlanUI = {
@@ -304,9 +304,8 @@ export default function LandingPage() {
             {plans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${
-                  plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""
-                }`}
+                className={`relative bg-gray-800/50 border-gray-700 hover:border-gray-600 transition-all ${plan.popular ? "ring-2 ring-cyan-500 scale-105" : ""
+                  }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">

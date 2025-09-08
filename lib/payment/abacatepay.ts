@@ -1,76 +1,14 @@
 "use server";
 
+import { ClientInfo, Product, BillingResponse } from "@/models/Payment";
+import { pixelPlan, turboPlan, ultraPlan } from "@/models/Plans";
+
 const BASE_URL = process.env.BASE_URL;
 const ABACATEPAY_API_KEY = process.env.ABACATEPAY_API_KEY;
 
 const ABACATE_PAY_URL = process.env.ABACATE_PAY_URL;
 
-interface Product {
-  externalId: string;
-  name: string;
-  description: string;
-  quantity: number;
-  price: number;
-}
-
-export interface ClientInfo {
-  name: string;
-  email: string;
-  phone: string;
-  taxId: string;
-}
-
-interface BillingResponse {
-  error: null | string;
-  data: {
-    id: string;
-    products: Array<{
-      id: string;
-      externalId: string;
-      quantity: number;
-    }>;
-    amount: number;
-    status: string;
-    devMode: boolean;
-    methods: string[];
-    url: string;
-    customer?: {
-      id: string;
-      metadata: {
-        name: string;
-        cellphone: string;
-        taxId: string;
-        email: string;
-      };
-    };
-  };
-}
-
-export interface PixelPlan {
-  externalId: "pixel-plan";
-  name: "Pixel";
-  description: "Perfeito para começar sua jornada retrô";
-  quantity: 1;
-  price: 499;
-}
-
-export interface TurboPlan {
-  externalId: "turbo-plan";
-  name: "Turbo";
-  description: "A escolha mais popular dos gamers";
-  quantity: 1;
-  price: 999;
-}
-
-export interface UltraPlan {
-  externalId: "ultra-plan";
-  name: "Ultra";
-  description: "Experiência completa sem limites";
-  quantity: 1;
-  price: 1499;
-}
-
-export type ProductType = PixelPlan | TurboPlan | UltraPlan;
+export type ProductType = typeof pixelPlan | typeof turboPlan | typeof ultraPlan;
 
 function getProductByType(pType: ProductType): Product {
   const product = {
