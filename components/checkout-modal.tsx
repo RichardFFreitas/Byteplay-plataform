@@ -29,9 +29,11 @@ import {
 } from "lucide-react";
 import {
   createPixPayment,
-  ClientInfo,
   ProductType,
-} from "@/app/api/abacatepay/route";
+} from "@/lib/payment/abacatepay";
+import { createUser } from "@/services/userService";
+import { PlansName } from "@/models/enums/plansName";
+import { ClientInfo } from "@/models/Payment";
 
 export interface Product {
   product: ProductType;
@@ -150,7 +152,7 @@ export function CheckoutModal({
                   Finalizar Assinatura
                 </DialogTitle>
                 <DialogDescription className="text-gray-400">
-                  Plano {selectedPlan.product.name} -{" "}
+                  Plano {selectedPlan.product.name as PlansName} -{" "}
                   {formatCentavosToReal(selectedPlan.product.price)} /
                   {selectedPlan.period}
                 </DialogDescription>
@@ -165,12 +167,12 @@ export function CheckoutModal({
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-white text-lg">
-                  Plano {selectedPlan.product.name}
+                  Plano {selectedPlan.product.name as PlansName}
                 </CardTitle>
                 <Badge
                   className={`bg-gradient-to-r ${selectedPlan.color} text-white`}
                 >
-                  {selectedPlan.product.name}
+                  {selectedPlan.product.name as PlansName}
                 </Badge>
               </div>
               <CardDescription className="text-gray-400">
@@ -310,6 +312,13 @@ export function CheckoutModal({
                   formData as ClientInfo
                 );
                 if ((await billingRes).data.url) {
+                  createUser({
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    taxId: formData.taxId,
+                    plan: selectedPlan.product.name as PlansName,
+                  });
                   window.location.href = (await billingRes).data.url;
                 }
               }}
