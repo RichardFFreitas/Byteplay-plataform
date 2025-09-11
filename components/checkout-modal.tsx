@@ -312,6 +312,7 @@ export function CheckoutModal({
                   formData as ClientInfo
                 );
                 if ((await billingRes).data.url) {
+                  // TODO: Criar um loading na tela de dashboard ou redirecionar para outra tela apos o pagamento, para poder criar o usuario logo aps a confirmação do pagamento
                   createUser({
                     name: formData.name,
                     email: formData.email,
