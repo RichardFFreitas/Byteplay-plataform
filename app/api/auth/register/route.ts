@@ -1,4 +1,4 @@
-"user server"
+"use server"
 
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db/mongodb";
