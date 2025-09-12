@@ -10,6 +10,7 @@ export async function createUser(data: {
   email: string;
   phone: string;
   taxId: string;
+  password: string;
   plan: PlansName;
 }) {
   await dbConnect();
@@ -17,10 +18,12 @@ export async function createUser(data: {
   if (existing) throw new Error("Email já cadastrado");
 
   const taxIdHash = await bcrypt.hash(data.taxId, 10);
+  const passwordHash = await bcrypt.hash(data.password, 10);
 
   const user = await User.create({
     ...data,
     taxIdHash,
+    passwordHash,
     lastPayment: null,
   });
 

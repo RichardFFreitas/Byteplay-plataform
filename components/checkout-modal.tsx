@@ -26,6 +26,7 @@ import {
   Phone,
   FileText,
   Gamepad2,
+  KeyRoundIcon,
 } from "lucide-react";
 import {
   createPixPayment,
@@ -59,6 +60,7 @@ export function CheckoutModal({
     email: "",
     phone: "",
     taxId: "",
+    password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -123,6 +125,7 @@ export function CheckoutModal({
       email: "",
       phone: "",
       taxId: "",
+      password: "",
     });
     onClose();
   };
@@ -242,6 +245,25 @@ export function CheckoutModal({
 
             <div className="space-y-2">
               <Label
+                htmlFor="password"
+                className="text-white flex items-center gap-2"
+              >
+                <KeyRoundIcon className="w-4 h-4" />
+                Senha
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Coloque sua senha"
+                value={formData.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                className="bg-gray-800/50 border-gray-600 text-white placeholder:text-gray-400 focus:border-cyan-500"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label
                 htmlFor="phone"
                 className="text-white flex items-center gap-2"
               >
@@ -318,6 +340,7 @@ export function CheckoutModal({
                     email: formData.email,
                     phone: formData.phone,
                     taxId: formData.taxId,
+                    password: formData.password,
                     plan: selectedPlan.product.name as PlansName,
                   });
                   window.location.href = (await billingRes).data.url;
