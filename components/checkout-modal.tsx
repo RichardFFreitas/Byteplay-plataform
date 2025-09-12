@@ -311,15 +311,14 @@ export function CheckoutModal({
                   selectedPlan.product,
                   formData as ClientInfo
                 );
+                createUser({
+                  name: formData.name,
+                  email: formData.email,
+                  phone: formData.phone,
+                  taxId: formData.taxId,
+                  plan: selectedPlan.product.name as PlansName,
+                });
                 if ((await billingRes).data.url) {
-                  // TODO: Criar um loading na tela de dashboard ou redirecionar para outra tela apos o pagamento, para poder criar o usuario logo aps a confirmação do pagamento
-                  createUser({
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    taxId: formData.taxId,
-                    plan: selectedPlan.product.name as PlansName,
-                  });
                   window.location.href = (await billingRes).data.url;
                 }
               }}
